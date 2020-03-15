@@ -59,6 +59,7 @@ class Todo extends Component {
     super(props)
     this.state = { entries: ["do dishes","do chores","watch TV"],edit:false,text:"" } 
     this.handleChange = this.handleChange.bind(this);
+    this.handleEnterkey = this.handleEnterkey.bind(this);
     this.textInput = React.createRef();
   }
 
@@ -73,24 +74,25 @@ EditOff = (e) => {
     this.setState({edit: false});
     }
 
+
+
+
     handleChange(e) {
-      if (e.keyCode === "13") { 
-      console.log("entree test",e.keyCode)
-      this.Taskadd(this.state.text);
-      this.setState({text:"",edit:false});
-
-      } else {
-
-      this.setState({text: e.target.value});
-      console.log("clavier test",e.keyCode)
+       this.setState({text: e.target.value});
       
-    }}
+    }
+  
 
   Taskadd = (task) => {
     const temp = this.state.entries;
     temp.push(task);
     console.log("testtaskadd",this.state.entries);
-    this.setState({entries:temp})
+    this.setState({text:"",entries:temp,edit:false})
+  }
+
+  handleEnterkey (e) {
+    if (e.key === 'Enter')
+    this.Taskadd(this.state.text);
   }
 
   Finish = (key) => {
@@ -114,7 +116,7 @@ EditOff = (e) => {
           {this.state.entries.map((task,index) => (
           <Entry key={index} index={index} task={`${task}`} delete={this.Finish} />
           ))}
-        <input ref={this.textInput} id="edit" className={`entry ${this.state.edit ? '': 'suppressed'}`} value={this.state.text} onChange={this.handleChange} />
+        <input ref={this.textInput} id="edit" className={`entry ${this.state.edit ? '': 'suppressed'}`} value={this.state.text} onChange={this.handleChange} onKeyPress={this.handleEnterkey} />
         {/* <EditEntry visible={this.state.edit} SendEntry={this.Taskadd} /> */}
         <NewEntry addtask={this.EditOn} />
         {/* <NewEntry task="frequent" addtask={this.Taskadd}/> */}
