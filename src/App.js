@@ -17,34 +17,35 @@ function Tick(props) {
   )
 }
 
-class EditEntry extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {value: '',visible:false};
+// shitty class for a stupid textinput component which i cant autofocus
+// class EditEntry extends Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = {value: '',visible:false};
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
+//     this.handleChange = this.handleChange.bind(this);
+//     this.handleSubmit = this.handleSubmit.bind(this);
+//   }
 
-  handleChange(event) {
-    this.setState({value: event.target.value});
-  }
+//   handleChange(event) {
+//     this.setState({value: event.target.value});
+//   }
 
-  handleSubmit(event) {
-    alert('Le nom a été soumis : ' + this.state.value);
-    event.preventDefault();
-    props.SendEntry(this.state.value);
-    this.setState({value:''})
+//   handleSubmit(event) {
+//     alert('Le nom a été soumis : ' + this.state.value);
+//     event.preventDefault();
+//     this.props.SendEntry(this.state.value);
+//     this.setState({value:''})
     
-  }
+//   }
  
 
-  render () {
-    return (
-        <input ref="nameInput" id="edit" className={`entry ${this.state.visible ? '': 'suppressed'}`} value={this.state.value} onChange={this.handleChange} />
-      )
-  }
-}
+//   render () {
+//     return (
+//         <input id="edit" className={`entry ${this.state.visible ? '': 'suppressed'}`} value={this.state.value} onChange={this.handleChange} />
+//       )
+//   }
+// }
 
 function NewEntry(props) {
   return (
@@ -56,13 +57,14 @@ function NewEntry(props) {
 class Todo extends Component {
   constructor(props) {
     super(props)
-    this.state = { entries: ["do dishes","do chores","watch TV"],edit:false,text:"" }
-    this.edit = React.createRef();  
+    this.state = { entries: ["do dishes","do chores","watch TV"],edit:false,text:"" } 
+    this.handleChange = this.handleChange.bind(this);
+    this.textInput = React.createRef();
   }
 
 EditOn = (e) => {
     this.setState({edit: true}); 
-    this.edit.current.focus();
+    
   } 
    
    
@@ -71,6 +73,18 @@ EditOff = (e) => {
     this.setState({edit: false});
     }
 
+    handleChange(e) {
+      if (e.keyCode === "13") { 
+      console.log("entree test",e.keyCode)
+      this.Taskadd(this.state.text);
+      this.setState({text:"",edit:false});
+
+      } else {
+
+      this.setState({text: e.target.value});
+      console.log("clavier test",e.keyCode)
+      
+    }}
 
   Taskadd = (task) => {
     const temp = this.state.entries;
@@ -80,17 +94,17 @@ EditOff = (e) => {
   }
 
   Finish = (key) => {
-    console.log("test index",key)
+    // console.log("test index",key)
     const temp = this.state.entries;
     temp.splice(key, 1);
-    console.log("test index 2",temp)
+    // console.log("test index 2",temp)
     this.setState({entries:temp})
   }
   
 
-  // componentDidUpdate {
-  //   // for machine in *state* ecrire un composant *entry* par task
-  // }
+  componentDidUpdate() {
+    this.textInput.current.focus();
+  }
 
   render () 
   {
@@ -100,7 +114,8 @@ EditOff = (e) => {
           {this.state.entries.map((task,index) => (
           <Entry key={index} index={index} task={`${task}`} delete={this.Finish} />
           ))}
-        <EditEntry ref={this.edit} visible={this.state.edit} SendEntry={this.Taskadd} />
+        <input ref={this.textInput} id="edit" className={`entry ${this.state.edit ? '': 'suppressed'}`} value={this.state.text} onChange={this.handleChange} />
+        {/* <EditEntry visible={this.state.edit} SendEntry={this.Taskadd} /> */}
         <NewEntry addtask={this.EditOn} />
         {/* <NewEntry task="frequent" addtask={this.Taskadd}/> */}
       </div>
