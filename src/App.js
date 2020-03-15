@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import tick from './tick.svg'
-import './App.css';
+import React, { Component } from "react";
+import tick from "./tick.svg";
+import "./App.css";
 
 function Entry(props) {
   return (
@@ -8,13 +8,18 @@ function Entry(props) {
       {props.task}
       <Tick index={props.index} click={props.delete} />
     </div>
-  )
+  );
 }
 
 function Tick(props) {
   return (
-      <img className="tick" src={tick} alt="" onClick={() => props.click(props.index)} />
-  )
+    <img
+      className="tick"
+      src={tick}
+      alt=""
+      onClick={() => props.click(props.index)}
+    />
+  );
 }
 
 // shitty class for a stupid textinput component which i cant autofocus
@@ -36,9 +41,8 @@ function Tick(props) {
 //     event.preventDefault();
 //     this.props.SendEntry(this.state.value);
 //     this.setState({value:''})
-    
+
 //   }
- 
 
 //   render () {
 //     return (
@@ -50,78 +54,85 @@ function Tick(props) {
 function NewEntry(props) {
   return (
     // <div className="entry new-entry" onClick={() => props.addtask(props.task)}>Add new entry...</div>
-    <div className="entry new-entry" onClick={() => props.addtask()}>Add new entry...</div>
-  )
+    <div className="entry new-entry" onClick={() => props.addtask()}>
+      Add new entry...
+    </div>
+  );
 }
 
 class Todo extends Component {
   constructor(props) {
-    super(props)
-    this.state = { entries: ["do dishes","do chores","watch TV"],edit:false,text:"" } 
+    super(props);
+    this.state = {
+      entries: ["do dishes", "do chores", "watch TV"],
+      edit: false,
+      text: ""
+    };
     this.handleChange = this.handleChange.bind(this);
     this.handleEnterkey = this.handleEnterkey.bind(this);
     this.textInput = React.createRef();
   }
 
-EditOn = (e) => {
-    this.setState({edit: true}); 
-    
-  } 
-   
-   
+  EditOn = e => {
+    this.setState({ edit: true });
+  };
 
-EditOff = (e) => {
-    this.setState({edit: false});
-    }
+  EditOff = e => {
+    this.setState({ edit: false });
+  };
 
+  handleChange(e) {
+    this.setState({ text: e.target.value });
+  }
 
-
-
-    handleChange(e) {
-       this.setState({text: e.target.value});
-      
-    }
-  
-
-  Taskadd = (task) => {
+  Taskadd = task => {
     const temp = this.state.entries;
     temp.push(task);
-    console.log("testtaskadd",this.state.entries);
-    this.setState({text:"",entries:temp,edit:false})
+    console.log("testtaskadd", this.state.entries);
+    this.setState({ text: "", entries: temp, edit: false });
+  };
+
+  handleEnterkey(e) {
+    if (e.key === "Enter") this.Taskadd(this.state.text);
   }
 
-  handleEnterkey (e) {
-    if (e.key === 'Enter')
-    this.Taskadd(this.state.text);
-  }
-
-  Finish = (key) => {
+  Finish = key => {
     // console.log("test index",key)
     const temp = this.state.entries;
     temp.splice(key, 1);
     // console.log("test index 2",temp)
-    this.setState({entries:temp})
-  }
-  
+    this.setState({ entries: temp });
+  };
 
   componentDidUpdate() {
     this.textInput.current.focus();
   }
 
-  render () 
-  {
+  render() {
     // const liste = this.state.entries;
     return (
       <div className="todo-box">
-          {this.state.entries.map((task,index) => (
-          <Entry key={index} index={index} task={`${task}`} delete={this.Finish} />
-          ))}
-        <input ref={this.textInput} id="edit" className={`entry ${this.state.edit ? '': 'suppressed'}`} value={this.state.text} onChange={this.handleChange} onKeyPress={this.handleEnterkey} />
+        {this.state.entries.map((task, index) => (
+          <Entry
+            key={index}
+            index={index}
+            task={`${task}`}
+            delete={this.Finish}
+          />
+        ))}
+        <input
+          ref={this.textInput}
+          id="edit"
+          className={`entry ${this.state.edit ? "" : "suppressed"}`}
+          value={this.state.text}
+          onChange={this.handleChange}
+          onKeyPress={this.handleEnterkey}
+        />
         {/* <EditEntry visible={this.state.edit} SendEntry={this.Taskadd} /> */}
         <NewEntry addtask={this.EditOn} />
         {/* <NewEntry task="frequent" addtask={this.Taskadd}/> */}
       </div>
-    )
+    );
   }
 }
 
