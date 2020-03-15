@@ -17,11 +17,33 @@ function Tick(props) {
   )
 }
 
-function EditEntry(props) {
+class EditEntry extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {value: '',visible:false};
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleChange(event) {
+    this.setState({value: event.target.value});
+  }
+
+  handleSubmit(event) {
+    alert('Le nom a été soumis : ' + this.state.value);
+    event.preventDefault();
+    props.SendEntry(this.state.value);
+    this.setState({value:''})
+    
+  }
  
-  return (
-      <input ref="nameInput" id="edit" className={`entry ${props.visible ? '': 'suppressed'}`}/>
-    )
+
+  render () {
+    return (
+        <input ref="nameInput" id="edit" className={`entry ${this.state.visible ? '': 'suppressed'}`} value={this.state.value} onChange={this.handleChange} />
+      )
+  }
 }
 
 function NewEntry(props) {
@@ -34,7 +56,7 @@ function NewEntry(props) {
 class Todo extends Component {
   constructor(props) {
     super(props)
-    this.state = { entries: ["do dishes","do chores","watch TV"],edit:false }
+    this.state = { entries: ["do dishes","do chores","watch TV"],edit:false,text:"" }
     this.edit = React.createRef();  
   }
 
@@ -78,7 +100,7 @@ EditOff = (e) => {
           {this.state.entries.map((task,index) => (
           <Entry key={index} index={index} task={`${task}`} delete={this.Finish} />
           ))}
-        <EditEntry ref={this.edit} visible={this.state.edit} />
+        <EditEntry ref={this.edit} visible={this.state.edit} SendEntry={this.Taskadd} />
         <NewEntry addtask={this.EditOn} />
         {/* <NewEntry task="frequent" addtask={this.Taskadd}/> */}
       </div>
