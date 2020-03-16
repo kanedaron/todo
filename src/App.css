@@ -83,3 +83,14 @@
   border-bottom: solid rgb(182, 182, 182) 1px;
   outline: 0;
 }
+
+@media (max-width: 900px) {
+  .entry {
+    width:95%;
+    line-height: 30px;
+  }
+
+  .todo-box {
+    margin: 40px;
+  }
+}
