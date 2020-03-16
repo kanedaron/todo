@@ -166,6 +166,7 @@ function App() {
   return (
     <div className="App">
       <Todo />
+      <div className="credit">Made by <a rel="noopener noreferrer" target="_blank" href="https://github.com/kanedaron">Nicolas Bonamour</a></div>
     </div>
   );
 }

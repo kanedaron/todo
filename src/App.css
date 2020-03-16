@@ -84,6 +84,28 @@
   outline: 0;
 }
 
+.credit {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  /* font-size: 12px; */
+
+  font-family: Montserrat, Georgia, 'Times New Roman', Times, serif;
+  /* text-transform: uppercase; */
+  /* letter-spacing: 0.45em; */
+  /* font-weight: 600; */
+}
+
+.credit a {
+  color: black;
+  text-decoration: blue;
+  transition: all .5s ease;
+}
+
+.credit a:hover {
+  color:rgb(206, 0, 0);
+}
+
 @media (max-width: 900px) {
   .entry {
     box-sizing: border-box;
@@ -93,5 +115,9 @@
 
   .todo-box {
     margin: 40px;
+  }
+
+  .credit {
+    display: none;
   }
 }
