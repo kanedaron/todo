@@ -63,11 +63,32 @@ function NewEntry(props) {
 class Todo extends Component {
   constructor(props) {
     super(props);
+
+    // Get cookie data as Array form
+    // tester si marche sans    const decodedCookie = decodeURIComponent(document.cookie);
+    // the 4 lines of code which follow are not useful
+    // const machine = "username=John Smith; expires=Thu, 18 Dec 2013 12:00:00 UTC; path=/";
+    // const testcookie=/name=(.+);\sexpires/;
+    // const parseddata = testcookie.exec(machine);
+    // console.log(parsedata);
+    const d = new Date();
+    d.setTime(d.getTime() + (360*24*60*60*1000));
+    const expire = ";expires="+ d.toUTCString() + ";path=/";
+
+    if (document.cookie) {
+    const cookiedata = document.cookie.replace(/(?:(?:^|.*;\s*)todo\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+    const fetcheddata = JSON.parse(cookiedata)
+    this.state = { entries:fetcheddata,edit:false,text:"",expire:expire}
+
+    } else {
+
     this.state = {
       entries: ["do dishes", "do chores", "watch TV"],
       edit: false,
-      text: ""
-    };
+      text: "",
+      expire:expire};
+    }
+
     this.handleChange = this.handleChange.bind(this);
     this.handleEnterkey = this.handleEnterkey.bind(this);
     this.textInput = React.createRef();
@@ -105,6 +126,11 @@ class Todo extends Component {
   };
 
   componentDidUpdate() {
+    // Data is sent to cookies
+    const datasent = JSON.stringify(this.state.entries);
+    document.cookie = "todo=" + datasent + this.state.expire;
+
+
     this.textInput.current.focus();
   }
 
