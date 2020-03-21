@@ -2,4 +2,4 @@
 
 Hello! This is a small minimalistic todo app, to do some training in React.<br />
 It manages persistent data at cookie level, and also serves a meticulously designed mobile interface ^^<br/>
-It's continuously deployed at https://strike.ovh.
+It's continuously deployed at <https://minimalist-todo.netlify.com>
