@@ -83,7 +83,7 @@ class Todo extends Component {
     } else {
 
     this.state = {
-      entries: ["do dishes", "do chores", "watch TV"],
+      entries: ["do dishes", "do chores", "watch TV" , "press enter to save a task"],
       edit: false,
       text: "",
       expire:expire};
